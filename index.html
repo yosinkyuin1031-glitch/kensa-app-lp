@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>検査アプリ｜施術者の検査手技をデジタル化する唯一のツール</title>
+  <meta name="description" content="写真じゃわからない、体の本当の状態を記録する。施術者の検査手技をデジタル化する唯一のアプリ。限定20院モニター募集中。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      color: #1a1a2e;
+      background: #fff;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ===== UTILITY ===== */
+    .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+    .section { padding: 80px 0; }
+    .section--gray { background: #f7f9fc; }
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 48px;
+      line-height: 1.5;
+    }
+    .section-title span { color: #2563eb; }
+    .accent { color: #2563eb; }
+    .text-center { text-align: center; }
+
+    /* ===== CTA BUTTON ===== */
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 18px 40px;
+      border-radius: 60px;
+      box-shadow: 0 4px 20px rgba(249, 115, 22, 0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.04em;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(249, 115, 22, 0.45);
+    }
+    .cta-sub {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 400;
+      margin-top: 4px;
+      opacity: 0.9;
+    }
+    .cta-note {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 12px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #e0e7ff 100%);
+      padding: 80px 0 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, #fff);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: #2563eb;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 20px;
+      border-radius: 30px;
+      margin-bottom: 24px;
+      letter-spacing: 0.05em;
+    }
+    .hero h1 {
+      font-size: 1.75rem;
+      font-weight: 900;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(transparent 60%, #bfdbfe 60%);
+      padding: 0 4px;
+    }
+    .hero p.sub {
+      font-size: 1.05rem;
+      color: #475569;
+      line-height: 1.9;
+      margin-bottom: 36px;
+    }
+    .hero .cta-btn { margin-bottom: 8px; }
+
+    /* ===== PAIN POINTS ===== */
+    .pain-list {
+      list-style: none;
+      max-width: 560px;
+      margin: 0 auto 40px;
+    }
+    .pain-list li {
+      font-size: 1.05rem;
+      padding: 14px 0 14px 44px;
+      position: relative;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .pain-list li::before {
+      content: '☐';
+      position: absolute;
+      left: 8px;
+      top: 14px;
+      font-size: 1.2rem;
+      color: #94a3b8;
+    }
+    .pain-resolve {
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-align: center;
+      color: #2563eb;
+      margin-top: 32px;
+    }
+
+    /* ===== COMPARISON TABLE ===== */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-bottom: 32px;
+    }
+    .compare-table th, .compare-table td {
+      padding: 12px 10px;
+      border: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: top;
+    }
+    .compare-table thead th {
+      background: #1e40af;
+      color: #fff;
+      font-weight: 700;
+      text-align: center;
+    }
+    .compare-table thead th:first-child {
+      background: #64748b;
+    }
+    .compare-table thead th:nth-child(2) {
+      background: #94a3b8;
+    }
+    .compare-table tbody td:first-child {
+      font-weight: 600;
+      background: #f8fafc;
+      white-space: nowrap;
+    }
+    .compare-table tbody td:last-child {
+      background: #eff6ff;
+    }
+    .compare-quote {
+      text-align: center;
+      font-size: 1.05rem;
+      color: #475569;
+      line-height: 1.9;
+      margin-top: 24px;
+    }
+    .compare-quote strong { color: #1e40af; }
+
+    /* ===== FEATURES ===== */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .feature-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border: 1px solid #e5e7eb;
+    }
+    .feature-card .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px; height: 36px;
+      background: #2563eb;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-radius: 50%;
+      margin-bottom: 16px;
+    }
+    .feature-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #1a1a2e;
+    }
+    .feature-card p {
+      font-size: 0.95rem;
+      color: #475569;
+      line-height: 1.8;
+    }
+
+    /* ===== STORY ===== */
+    .story-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border-left: 4px solid #2563eb;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .story-box p {
+      font-size: 1rem;
+      line-height: 2;
+      margin-bottom: 20px;
+      color: #334155;
+    }
+    .story-box p:last-of-type { margin-bottom: 0; }
+    .story-author {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+      font-size: 0.95rem;
+      color: #64748b;
+    }
+    .story-author strong {
+      display: block;
+      font-size: 1.1rem;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    /* ===== EFFECTS ===== */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .effect-block h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #2563eb;
+      display: inline-block;
+    }
+    .effect-block ul {
+      list-style: none;
+    }
+    .effect-block li {
+      padding: 10px 0 10px 28px;
+      position: relative;
+      font-size: 0.95rem;
+      color: #334155;
+    }
+    .effect-block li::before {
+      content: '✓';
+      position: absolute;
+      left: 0; top: 10px;
+      color: #2563eb;
+      font-weight: 700;
+    }
+
+    /* ===== PRICING ===== */
+    .pricing-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 28px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      border: 2px solid #2563eb;
+      max-width: 480px;
+      margin: 0 auto 24px;
+      text-align: center;
+    }
+    .pricing-card .label {
+      display: inline-block;
+      background: #2563eb;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .pricing-card .price {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #1e40af;
+      line-height: 1.2;
+    }
+    .pricing-card .price small {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .pricing-card .price-note {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-top: 8px;
+    }
+    .pricing-details {
+      margin-top: 24px;
+      text-align: left;
+    }
+    .pricing-details li {
+      list-style: none;
+      padding: 8px 0 8px 24px;
+      position: relative;
+      font-size: 0.95rem;
+      color: #334155;
+    }
+    .pricing-details li::before {
+      content: '●';
+      position: absolute;
+      left: 0; top: 10px;
+      color: #2563eb;
+      font-size: 0.6rem;
+    }
+    .pricing-compare {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 16px;
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    /* ===== MONITOR INFO ===== */
+    .monitor-info {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .monitor-info h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 12px;
+      margin-top: 32px;
+    }
+    .monitor-info h3:first-child { margin-top: 0; }
+    .monitor-info ul { list-style: none; }
+    .monitor-info li {
+      padding: 8px 0 8px 24px;
+      position: relative;
+      font-size: 0.95rem;
+    }
+    .monitor-info li::before {
+      content: '•';
+      position: absolute;
+      left: 4px; top: 8px;
+      color: #2563eb;
+      font-weight: 700;
+    }
+    .flow-list { counter-reset: flow; list-style: none; }
+    .flow-list li {
+      counter-increment: flow;
+      padding: 12px 0 12px 48px;
+      position: relative;
+      font-size: 0.95rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .flow-list li::before {
+      content: counter(flow);
+      position: absolute;
+      left: 0; top: 10px;
+      width: 32px; height: 32px;
+      background: #2563eb;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ===== FAQ ===== */
+    .faq-list { max-width: 640px; margin: 0 auto; }
+    .faq-item {
+      margin-bottom: 16px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+    }
+    .faq-q {
+      width: 100%;
+      background: #fff;
+      border: none;
+      padding: 18px 48px 18px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      position: relative;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+    .faq-q::after {
+      content: '+';
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.4rem;
+      color: #2563eb;
+      transition: transform 0.3s;
+    }
+    .faq-q.active::after {
+      content: '−';
+    }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      background: #f8fafc;
+    }
+    .faq-a.open {
+      max-height: 300px;
+    }
+    .faq-a-inner {
+      padding: 16px 20px;
+      font-size: 0.95rem;
+      color: #475569;
+      line-height: 1.8;
+    }
+
+    /* ===== FINAL CTA ===== */
+    .final-cta {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: #fff;
+      padding: 80px 0;
+      text-align: center;
+    }
+    .final-cta h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .final-cta p {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-bottom: 8px;
+      line-height: 1.8;
+    }
+    .final-cta .cta-btn {
+      margin-top: 32px;
+    }
+    .final-cta .cta-note {
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 32px 0;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    footer a { color: #94a3b8; }
+    footer a:hover { color: #fff; }
+
+    /* ===== SCROLL ANIMATION ===== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (min-width: 640px) {
+      .hero h1 { font-size: 2.2rem; }
+      .section-title { font-size: 1.8rem; }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+      .effects-grid { grid-template-columns: 1fr 1fr; }
+      .compare-table { font-size: 0.95rem; }
+    }
+    @media (min-width: 900px) {
+      .hero h1 { font-size: 2.5rem; }
+      .feature-grid { grid-template-columns: 1fr 1fr 1fr; }
+      .container { padding: 0 32px; }
+    }
+
+    /* ===== APP PREVIEW ===== */
+    .app-preview {
+      margin: 40px auto 0;
+      max-width: 360px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+    }
+    .app-preview-header {
+      background: linear-gradient(135deg, #1e40af, #2563eb);
+      padding: 16px 20px;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    .app-preview-body {
+      padding: 20px;
+      font-size: 0.8rem;
+      color: #475569;
+    }
+    .app-preview-body .body-label {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .body-figure {
+      width: 120px;
+      height: 200px;
+      margin: 0 auto 16px;
+      position: relative;
+    }
+    .body-figure svg { width: 100%; height: 100%; }
+    .app-preview-body .indicators {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      font-size: 0.75rem;
+    }
+    .indicators .red { color: #ef4444; font-weight: 600; }
+    .indicators .blue { color: #3b82f6; font-weight: 600; }
+
+    /* ===== STICKY CTA (mobile) ===== */
+    .sticky-cta {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(8px);
+      padding: 12px 16px;
+      box-shadow: 0 -2px 12px rgba(0,0,0,0.1);
+      z-index: 100;
+      text-align: center;
+    }
+    .sticky-cta .cta-btn {
+      font-size: 0.95rem;
+      padding: 14px 32px;
+      width: 100%;
+      max-width: 360px;
+    }
+    @media (max-width: 768px) {
+      .sticky-cta.show { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">限定20院 モニター募集中</div>
+      <h1>
+        写真じゃわからない、<br>体の本当の状態を記録する。<br>
+        <span class="highlight">施術者の検査手技をデジタル化</span>する、<br>唯一のアプリ。
+      </h1>
+      <p class="sub">
+        検査の流れに沿って進めるだけで、全身の状態を可視化。<br>
+        患者さんに渡せるシート・ビフォーアフター・<br class="sp-only">セルフケア提案まで、これ1つで。
+      </p>
+      <a href="#apply" class="cta-btn">
+        20院限定モニターに申し込む
+        <span class="cta-sub">まずはZoomで5分のデモをご覧ください</span>
+      </a>
+      <p class="cta-note">※ 押し売りはしません。合わなければそれでOKです。</p>
+
+      <!-- App Preview Mockup -->
+      <div class="app-preview fade-in">
+        <div class="app-preview-header">検査シート - リアルタイム可視化</div>
+        <div class="app-preview-body">
+          <div class="body-label">全身の収縮・伸長パターン</div>
+          <div class="body-figure">
+            <svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
+              <!-- Simple body outline -->
+              <ellipse cx="60" cy="22" rx="16" ry="18" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+              <!-- Torso -->
+              <path d="M44 40 L40 100 L80 100 L76 40 Z" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+              <!-- Arms -->
+              <path d="M44 44 L20 80 L16 110" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+              <path d="M76 44 L100 80 L104 110" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+              <!-- Legs -->
+              <path d="M48 100 L42 150 L38 195" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+              <path d="M72 100 L78 150 L82 195" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+              <!-- Contraction markers (red) -->
+              <circle cx="50" cy="55" r="8" fill="#ef4444" opacity="0.25"/>
+              <circle cx="50" cy="55" r="4" fill="#ef4444" opacity="0.5"/>
+              <circle cx="42" cy="140" r="7" fill="#ef4444" opacity="0.25"/>
+              <circle cx="42" cy="140" r="3.5" fill="#ef4444" opacity="0.5"/>
+              <!-- Extension markers (blue) -->
+              <circle cx="70" cy="60" r="8" fill="#3b82f6" opacity="0.25"/>
+              <circle cx="70" cy="60" r="4" fill="#3b82f6" opacity="0.5"/>
+              <circle cx="78" cy="145" r="7" fill="#3b82f6" opacity="0.25"/>
+              <circle cx="78" cy="145" r="3.5" fill="#3b82f6" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="indicators">
+            <span><span class="red">●</span> 収縮</span>
+            <span><span class="blue">●</span> 伸長</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAIN POINTS ===== -->
+  <section class="section" id="problems">
+    <div class="container">
+      <h2 class="section-title fade-in">こんな悩み、<span>ありませんか？</span></h2>
+      <ul class="pain-list fade-in">
+        <li>何の検査をすればいいかわからない</li>
+        <li>検査しても、患者さんにうまく説明できない</li>
+        <li>検査結果が施術者の頭の中にしかない</li>
+        <li>スタッフが検査に自信を持てない</li>
+        <li>ビフォーアフターを見せたいけど、やり方がない</li>
+        <li>検査結果を紙やメモで管理していて、振り返りにくい</li>
+      </ul>
+      <p class="pain-resolve fade-in">これ、全部このアプリで解決できます。</p>
+    </div>
+  </section>
+
+  <!-- ===== COMPARISON ===== -->
+  <section class="section section--gray" id="difference">
+    <div class="container">
+      <h2 class="section-title fade-in">このアプリが他と<br><span>「根本的に違う」</span>理由</h2>
+      <div class="fade-in" style="overflow-x:auto;">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>写真姿勢分析<br>（他社）</th>
+              <th>検査アプリ<br>（本アプリ）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>検査方法</td>
+              <td>写真を撮って分析</td>
+              <td>施術者が手で検査した結果を記録</td>
+            </tr>
+            <tr>
+              <td>神経検査</td>
+              <td>× できない</td>
+              <td>✅ 記録・比較可能</td>
+            </tr>
+            <tr>
+              <td>筋力検査</td>
+              <td>× できない</td>
+              <td>✅ 記録・比較可能</td>
+            </tr>
+            <tr>
+              <td>全身横断分析</td>
+              <td>× 姿勢のみ</td>
+              <td>✅ 全身の収縮・伸長パターンを統合分析</td>
+            </tr>
+            <tr>
+              <td>施術方針</td>
+              <td>× 出ない</td>
+              <td>✅ 検査結果から自動導出</td>
+            </tr>
+            <tr>
+              <td>セルフケア</td>
+              <td>△ 一部</td>
+              <td>✅ イラスト付きで自動提案</td>
+            </tr>
+            <tr>
+              <td>カメラ環境</td>
+              <td>必要</td>
+              <td>不要</td>
+            </tr>
+            <tr>
+              <td>価格帯</td>
+              <td>月額1〜3万円</td>
+              <td><strong>月額5,500円</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="compare-quote fade-in">
+        写真で体の<strong>外側</strong>を見るか、検査で体の<strong>内側</strong>まで見るか。<br>
+        アプローチが根本的に違います。
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="section" id="features">
+    <div class="container">
+      <h2 class="section-title fade-in"><span>6つの機能</span>で<br>検査が変わる</h2>
+      <div class="feature-grid">
+        <div class="feature-card fade-in">
+          <div class="num">1</div>
+          <h3>段階的検査フロー</h3>
+          <p>検査の流れに沿ってウィザード形式で進行。立位→座位→上半身比較と、段階的に原因を絞り込む。スタッフでも同じ品質の検査ができます。</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="num">2</div>
+          <h3>リアルタイム収縮・伸長可視化</h3>
+          <p>検査結果を入力するたびに、体のどこが収縮し、どこが伸長しているかがリアルタイムで反映。患者さんへの説明がそのままできます。</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="num">3</div>
+          <h3>全身統合分析</h3>
+          <p>複数の検査ポイントを横断的に分析。「右肩が下がっている」だけでなく「なぜ下がっているのか」まで分析します。</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="num">4</div>
+          <h3>ビフォーアフター比較</h3>
+          <p>施術前後の検査結果を数値・ビジュアルで比較。「なんとなく楽になった」ではなく「ここがこう変わった」が見えます。</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="num">5</div>
+          <h3>セルフケア自動提案</h3>
+          <p>検査結果に基づいて、最適なセルフケアをイラスト付きで自動提案。患者さんにそのまま渡せます。</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="num">6</div>
+          <h3>PDF出力 & カルテ保存</h3>
+          <p>検査結果をPDFで出力して患者さんに渡せる。患者ごとにカルテとして保存され、経過を追跡できます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DEVELOPER STORY ===== -->
+  <section class="section section--gray" id="story">
+    <div class="container">
+      <h2 class="section-title fade-in"><span>開発者</span>の想い</h2>
+      <div class="story-box fade-in">
+        <p>僕は治療において「検査」をすごく大事にしています。</p>
+        <p>でも周りの先生の話を聞くと、「何の検査をすればいいかわからない」「検査しても患者さんにうまく説明できない」という声がすごく多かった。</p>
+        <p>これ、めちゃくちゃもったいないなと思ったんです。</p>
+        <p>車に「車検」があるように、体の状態を定期的にチェックできる仕組み。</p>
+        <p>そう思って、自分で検査アプリを作り始めました。</p>
+        <p>自分の院で毎日使って、改善して、訪問鍼灸のスタッフにも使ってもらって。</p>
+        <p>現場で使い倒しているからこそ、本当に必要な機能だけが詰まっています。</p>
+        <div class="story-author">
+          <strong>大口 陽平</strong>
+          大口神経整体院 院長 / 柔道整復師・鍼灸師
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EFFECTS ===== -->
+  <section class="section" id="effects">
+    <div class="container">
+      <h2 class="section-title fade-in"><span>導入効果</span></h2>
+      <div class="effects-grid">
+        <div class="effect-block fade-in">
+          <h3>患者さんへの効果</h3>
+          <ul>
+            <li>検査結果が「見える」から、初回から信頼が生まれる</li>
+            <li>結果シートを家族に見せて、紹介につながった実例あり</li>
+            <li>ビフォーアフターで「変わった実感」からリピート率向上</li>
+          </ul>
+        </div>
+        <div class="effect-block fade-in">
+          <h3>院の運営への効果</h3>
+          <ul>
+            <li>検査の流れが統一 → スタッフ教育コスト削減</li>
+            <li>検査記録がデジタルで残る → カルテ管理が楽に</li>
+            <li>セルフケア提案が自動 → 説明時間の短縮</li>
+            <li>PDF出力 → 患者説明資料の作成時間ゼロ</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING ===== -->
+  <section class="section section--gray" id="pricing">
+    <div class="container">
+      <h2 class="section-title fade-in"><span>料金</span></h2>
+      <div class="pricing-card fade-in">
+        <div class="label">20院限定モニター価格</div>
+        <div class="price">5,500<small>円/月（税込）</small></div>
+        <div class="price-note">初期費用 0円</div>
+        <ul class="pricing-details">
+          <li>Zoomでの使い方説明（30分）付き</li>
+          <li>チャットサポート付き</li>
+          <li>いつでも解約OK（縛りなし）</li>
+          <li>モニター終了後も同価格で継続可能</li>
+        </ul>
+      </div>
+      <p class="pricing-compare fade-in">
+        ※ 競合の姿勢分析ツールは月額10,000〜30,000円が相場<br>
+        ※ モニター価格は20院限定。埋まり次第終了
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== MONITOR INFO ===== -->
+  <section class="section" id="monitor">
+    <div class="container">
+      <h2 class="section-title fade-in"><span>モニター募集</span>概要</h2>
+      <div class="monitor-info fade-in">
+        <h3>募集人数</h3>
+        <p style="font-size:1.3rem;font-weight:700;color:#1e40af;">限定20院</p>
+
+        <h3>対象の方</h3>
+        <ul>
+          <li>整体院・鍼灸院・接骨院を運営されている方</li>
+          <li>実際にアプリを使ってフィードバックをいただける方</li>
+          <li>Zoomでの使い方説明（30分程度）に参加できる方</li>
+        </ul>
+
+        <h3>モニターで得られるもの</h3>
+        <ul>
+          <li>競合の1/3〜1/5の価格で最新の検査ツールが使える</li>
+          <li>開発者本人がZoomで直接サポート</li>
+          <li>フィードバックが即反映される（要望→翌日対応も可能）</li>
+          <li>一般公開前に使い込める先行者メリット</li>
+        </ul>
+
+        <h3>お申し込みの流れ</h3>
+        <ol class="flow-list">
+          <li>下のボタンから問い合わせ（またはDM）</li>
+          <li>Zoomで5分のデモ → アプリの中身をお見せします</li>
+          <li>納得いただけたらアカウント発行</li>
+          <li>使い方説明（Zoom 30分）</li>
+          <li>実際に使いながらフィードバック</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section section--gray" id="faq">
+    <div class="container">
+      <h2 class="section-title fade-in">よくある<span>質問</span></h2>
+      <div class="faq-list fade-in">
+
+        <div class="faq-item">
+          <button class="faq-q">Q. パソコンが苦手でも使えますか？</button>
+          <div class="faq-a">
+            <div class="faq-a-inner">スマホ・タブレットで使えます。検査の流れに沿って画面をタップしていくだけなので、特別なスキルは不要です。</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">Q. 写真を撮る必要はありますか？</button>
+          <div class="faq-a">
+            <div class="faq-a-inner">いいえ。このアプリは施術者の手で行った検査結果を記録するツールです。カメラ環境に左右されません。</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">Q. スタッフにも使わせたいのですが？</button>
+          <div class="faq-a">
+            <div class="faq-a-inner">検査の流れがアプリに組み込まれているので、画面に沿って進めるだけで統一した検査ができます。スタッフ教育にも活用いただけます。</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">Q. 途中で解約できますか？</button>
+          <div class="faq-a">
+            <div class="faq-a-inner">いつでも解約できます。縛りはありません。</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">Q. データは安全ですか？</button>
+          <div class="faq-a">
+            <div class="faq-a-inner">患者データは暗号化されてクラウドに保存されます。院ごとにデータが完全に分離されているため、他院のデータが見えることはありません。</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">Q. 他の姿勢分析アプリとの違いは？</button>
+          <div class="faq-a">
+            <div class="faq-a-inner">一般的な姿勢分析アプリは「写真を分析」するものです。このアプリは「施術者の検査手技をデジタル化」するもので、神経検査・筋力検査まで記録・比較できる唯一のツールです。</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA ===== -->
+  <section class="final-cta" id="apply">
+    <div class="container">
+      <h2 class="fade-in">限定20院のモニター募集は、<br>埋まり次第終了です。</h2>
+      <p class="fade-in">Zoomで5分、実際のアプリをお見せします。</p>
+      <p class="fade-in">押し売りはしません。合わなければそれでOKです。</p>
+      <a href="https://utage-system.com/line/open/Dxf5LUU0g7Vx" target="_blank" rel="noopener" class="cta-btn fade-in">
+        LINEで問い合わせる
+        <span class="cta-sub">「検査アプリ」とメッセージください</span>
+      </a>
+      <p class="cta-note fade-in">※ LINEで「検査アプリ」と送るだけでOKです</p>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <p>大口神経整体院 / 大口陽平</p>
+      <p style="margin-top:8px;">&copy; 2026 大口神経整体院. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ===== STICKY CTA (mobile) ===== -->
+  <div class="sticky-cta" id="stickyCta">
+    <a href="https://utage-system.com/line/open/Dxf5LUU0g7Vx" target="_blank" rel="noopener" class="cta-btn">
+      LINEで問い合わせる
+    </a>
+  </div>
+
+  <script>
+    // Scroll animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const answer = btn.nextElementSibling;
+        const isOpen = answer.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+        document.querySelectorAll('.faq-q').forEach(q => q.classList.remove('active'));
+        // Open clicked (if was closed)
+        if (!isOpen) {
+          answer.classList.add('open');
+          btn.classList.add('active');
+        }
+      });
+    });
+
+    // Sticky CTA on mobile
+    const stickyCta = document.getElementById('stickyCta');
+    const heroSection = document.querySelector('.hero');
+    const finalCta = document.querySelector('.final-cta');
+
+    window.addEventListener('scroll', () => {
+      const heroBottom = heroSection.getBoundingClientRect().bottom;
+      const finalTop = finalCta.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+
+      if (heroBottom < 0 && finalTop > windowHeight) {
+        stickyCta.classList.add('show');
+      } else {
+        stickyCta.classList.remove('show');
+      }
+    });
+  </script>
+
+</body>
+</html>
